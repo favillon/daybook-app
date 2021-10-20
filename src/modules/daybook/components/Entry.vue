@@ -1,20 +1,43 @@
 <template>
-    <div class="entry-container pointer mb-3 p-2">
+    <div
+      class="entry-container pointer mb-3 p-2"
+      @click="$router.push({name:'entry', params:{id:entry.id}})">
         <!-- Titulo -->
         <div class="entry-title d-flex">
-            <span class="text-success fs-5 fw-bold">9</span>
-            <span class="mx-1 fs-5">Septiembre</span>
-            <span class="mx-2 fw-light">2021</span>
+            <span class="text-success fs-5 fw-bold">{{formatDate('dia')}}</span>
+            <span class="mx-1 fs-5">{{formatDate('mes')}}</span>
+            <span class="mx-2 fw-light">{{formatDate('ano')}}</span>
         </div>
         <div class="entry-description">
-            Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor
+            {{ shortText }}
         </div>
     </div>
 </template>
 
 <script>
-export default {
+var dateFormat = require("dateformat");
 
+export default {
+    props : {
+        entry : {
+            type : Object,
+            required : true
+        }
+    }, 
+    computed:{
+        shortText(){
+            return (this.entry.text.length > 130)
+                ? this.entry.text.substring(0, 130) + '...' 
+                : this.entry.text
+        }
+    },
+    methods:{
+        formatDate(tipo = 'dia'){
+            const dateView = dateFormat(this.entry.date, "dd-mm-yyyy").split("-")
+            const typeDate = ['dia', 'mes', 'ano']
+            return dateView[typeDate.indexOf(tipo)]
+        }
+    }
 }
 </script>
 

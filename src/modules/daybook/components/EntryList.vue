@@ -1,19 +1,50 @@
 <template>
   <div class="centry-list-container">
     <div class="px-2 pt-2">
-        <input type="text" class="form-control" placeholder="Buscar Entrada" />
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar Entrada"
+          v-model="term" />
     </div>
   </div>
+
+  <div class="mt-2 d-flex flex-colum">
+    <button
+      class="btn btn-primary mx-3"
+      @click="$router.push({name:'entry', params: {id:'new'}})">
+      <i class="fa fa-plus-circle">
+        Nueva Entrada
+      </i>
+    </button>
+  </div>
+  
   <div class="entry-scrollarea">
-      <Entry v-for="item in 5" :key="item" />
+      <Entry
+        v-for="entry in entriesByTerm"
+        :key="entry.id"
+        :entry="entry" />
   </div>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
+import { mapGetters } from 'vuex';
+
 export default {
   components:{
     Entry : defineAsyncComponent( ()=> import('../components/Entry.vue'))
+  },
+  computed: {
+    ...mapGetters('daybookModule', ['getEntriesbyTerm']),
+    entriesByTerm(){
+      return this.getEntriesbyTerm(this.term)
+    }
+  },
+  data(){
+    return{
+      term: ''
+    }
   }
 }
 </script>

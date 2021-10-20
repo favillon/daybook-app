@@ -1,5 +1,5 @@
 <template>
-    <nav class="nav-bar bg-primary">
+    <nav class="navbar bg-primary">
         <a class="navbar-brand text-white">
            <img
               src="@/assets/logo.png"
